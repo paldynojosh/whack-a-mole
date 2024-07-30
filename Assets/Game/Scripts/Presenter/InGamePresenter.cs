@@ -41,6 +41,14 @@ namespace WhackAMole.Presenter
                 .Where(sequenceType => sequenceType != SequenceType.Playing)
                 .Subscribe(_ => inGameView.SetVisible(false))
                 .AddTo(disposable);
+                .AddTo(disposable);
+
+            inGameView.OnHoleButtonClicked
+                .Subscribe(index =>
+                {
+                    // TODO: click event
+                })
+                .AddTo(disposable);
         }
 
         void IDisposable.Dispose() => disposable.Dispose();
