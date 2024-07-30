@@ -7,6 +7,13 @@
       "dependencies": {},
       "hash": "c61a7d9961114ac2c4c28c81e4a66ae7387280e3"
     },
+    "com.github-glitchenzo.nugetforunity": {
+      "version": "https://github.com/GlitchEnzo/NuGetForUnity.git?path=/src/NuGetForUnity",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "90fa6db024148d466fe738f58fd4263c7267346b"
+    },
     "com.unity.editorcoroutines": {
       "version": "1.0.0",
       "depth": 1,
