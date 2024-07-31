@@ -12,6 +12,7 @@ namespace WhackAMole.Presenter
         readonly InGameHUDView InGameHUDView;
         readonly ISequenceRepository sequenceRepository;
         readonly ITimerRepository timerRepository;
+        readonly IScoreRepository scoreRepository;
 
         readonly CompositeDisposable disposable = new();
 
@@ -19,11 +20,13 @@ namespace WhackAMole.Presenter
         public InGameHUDPresenter(
             InGameHUDView inGameHUDView,
             ISequenceRepository sequenceRepository,
-            ITimerRepository timerRepository)
+            ITimerRepository timerRepository,
+            IScoreRepository scoreRepository)
         {
             InGameHUDView = inGameHUDView;
             this.sequenceRepository = sequenceRepository;
             this.timerRepository = timerRepository;
+            this.scoreRepository = scoreRepository;
         }
 
         void IInitializable.Initialize()
@@ -35,6 +38,10 @@ namespace WhackAMole.Presenter
 
             timerRepository.Time
                 .Subscribe(time => InGameHUDView.SetTime(time))
+                .AddTo(disposable);
+
+            scoreRepository.Score
+                .Subscribe(score => InGameHUDView.SetScore(score))
                 .AddTo(disposable);
         }
 
