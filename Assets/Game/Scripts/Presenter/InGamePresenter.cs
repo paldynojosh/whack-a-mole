@@ -34,6 +34,7 @@ namespace WhackAMole.Presenter
                 .Subscribe(_ =>
                 {
                     inGameView.SetVisible(true);
+                    inGameModel.StartGame();
                 })
                 .AddTo(disposable);
 
@@ -41,6 +42,9 @@ namespace WhackAMole.Presenter
                 .Where(sequenceType => sequenceType != SequenceType.Playing)
                 .Subscribe(_ => inGameView.SetVisible(false))
                 .AddTo(disposable);
+
+            inGameModel.OnEndGame
+                .Subscribe(_ => sequenceRepository.SetSequence(SequenceType.Result))
                 .AddTo(disposable);
 
             inGameView.OnHoleButtonClicked

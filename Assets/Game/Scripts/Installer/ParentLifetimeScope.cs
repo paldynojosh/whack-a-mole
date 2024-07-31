@@ -9,6 +9,7 @@ namespace WhackAMole.Installer
         protected override void Configure(IContainerBuilder builder)
         {
             builder.Register<SequenceRepository>(Lifetime.Singleton);
+            builder.Register<TimerRepository>(Lifetime.Singleton);
         }
     }
 }
