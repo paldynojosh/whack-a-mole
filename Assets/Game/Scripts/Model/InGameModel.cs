@@ -8,6 +8,7 @@ namespace WhackAMole.Model
     public class InGameModel : IDisposable
     {
         readonly TimerRepository timerRepository;
+        readonly ScoreRepository scoreRepository;
 
         public Observable<Unit> OnEndGame => timerRepository.OnComplete;
 
@@ -16,9 +17,11 @@ namespace WhackAMole.Model
 
         [VContainer.Inject]
         public InGameModel(
-            TimerRepository timerRepository)
+            TimerRepository timerRepository,
+            ScoreRepository scoreRepository)
         {
             this.timerRepository = timerRepository;
+            this.scoreRepository = scoreRepository;
         }
 
         public void Initialize(int moleCount)
@@ -28,6 +31,8 @@ namespace WhackAMole.Model
             {
                 moleList.Add(new Mole());
             }
+
+            scoreRepository.ResetScore();
         }
 
         public void StartGame()
@@ -43,11 +48,11 @@ namespace WhackAMole.Model
 
         void IDisposable.Dispose() => timerRepository.StopTimer();
 
-        public void WhackMole(int index)
+        public void TryWhackMole(int index)
         {
             if (moleList[index].TryWhack())
             {
-                return;
+                scoreRepository.IncrementScore();
             }
         }
     }

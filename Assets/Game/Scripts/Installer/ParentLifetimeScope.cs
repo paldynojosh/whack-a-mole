@@ -14,6 +14,9 @@ namespace WhackAMole.Installer
             builder.Register<TimerRepository>(Lifetime.Singleton)
                 .AsImplementedInterfaces()
                 .AsSelf();
+            builder.Register<ScoreRepository>(Lifetime.Singleton)
+                .AsImplementedInterfaces()
+                .AsSelf();
         }
     }
 }

@@ -54,7 +54,7 @@ namespace WhackAMole.Presenter
             inGameView.OnHoleButtonClicked
                 .Subscribe(index =>
                 {
-                    inGameModel.WhackMole(index);
+                    inGameModel.TryWhackMole(index);
                 })
                 .AddTo(disposable);
         }
