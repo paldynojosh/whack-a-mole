@@ -1,6 +1,7 @@
 using System.Linq;
 using R3;
 using UnityEngine;
+using WhackAMole.Domain;
 
 namespace WhackAMole.View
 {
@@ -12,6 +13,8 @@ namespace WhackAMole.View
             holeViews
                 .Select((holeView, index) => holeView.OnHoleButtonClicked.Select(_ => index))
                 .Merge();
+
+        public int MoleCount => holeViews.Length;
 
         public void SetVisible(bool isTitle)
         {

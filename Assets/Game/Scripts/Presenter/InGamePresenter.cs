@@ -15,6 +15,7 @@ namespace WhackAMole.Presenter
         readonly SequenceRepository sequenceRepository;
 
         readonly CompositeDisposable disposable = new();
+        CompositeDisposable moleViewDisposable = new();
 
         [VContainer.Inject]
         public InGamePresenter(
@@ -34,6 +35,9 @@ namespace WhackAMole.Presenter
                 .Subscribe(_ =>
                 {
                     inGameView.SetVisible(true);
+                    inGameModel.Initialize(inGameView.MoleCount);
+
+                    SubscribeMoles();
                     inGameModel.StartGame();
                 })
                 .AddTo(disposable);
@@ -50,9 +54,40 @@ namespace WhackAMole.Presenter
             inGameView.OnHoleButtonClicked
                 .Subscribe(index =>
                 {
-                    // TODO: click event
+                    inGameModel.WhackMole(index);
                 })
                 .AddTo(disposable);
+        }
+
+        void SubscribeMoles()
+        {
+            moleViewDisposable?.Dispose();
+            moleViewDisposable = new CompositeDisposable();
+
+            var index = 0;
+            foreach (var mole in inGameModel.MoleList)
+            {
+                mole.Status
+                    .Subscribe(index, (status, i) =>
+                    {
+                        switch (status)
+                        {
+                            case MoleStatus.Covering:
+                                inGameView.Hide(i);
+                                break;
+                            case MoleStatus.Uncovering:
+                                inGameView.ShowWake(i);
+                                break;
+                            case MoleStatus.Whacked:
+                                inGameView.ShowHit(i);
+                                break;
+                            default:
+                                throw new ArgumentOutOfRangeException(nameof(status), status, null);
+                        }
+                    })
+                    .AddTo(disposable);
+                index++;
+            }
         }
 
         void IDisposable.Dispose() => disposable.Dispose();
